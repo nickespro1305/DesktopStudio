@@ -3,6 +3,8 @@
 import argparse
 from funcs.init import init
 from funcs.run import run
+from funcs.fetch import fetch
+
 
 # argparse
 parser = argparse.ArgumentParser(prog='DesktopStudio', description='A docker-based studio for your linux configs and enviroments', epilog='by s7lver')
@@ -18,3 +20,5 @@ if __name__ == "__main__":
         init()
     if args.action == "run":
         run(args.script)
+    if args.action == "fetch":
+        fetch
