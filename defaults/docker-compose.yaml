@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  debian-vnc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5901:5901"
+    environment:
+      - DISPLAY=:1
+      - VNC_RESOLUTION=1920x1080
+      - VNC_DEPTH=24
+    volumes:
+      - ./data:/home/dockeruser
