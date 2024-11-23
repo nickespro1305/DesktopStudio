@@ -5,6 +5,7 @@ from funcs.init import init
 from funcs.run import run
 from funcs.fetch import fetch
 from funcs.install import install
+from funcs.ps import ps
 
 # argparse
 parser = argparse.ArgumentParser(prog='DesktopStudio', description='A docker-based studio for your linux configs and enviroments', epilog='by s7lver')
@@ -25,3 +26,5 @@ if __name__ == "__main__":
         fetch()
     if args.action == "install":
         install(args.package)
+    if args.action == "ps":
+        ps()
