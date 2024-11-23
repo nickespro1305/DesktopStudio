@@ -38,7 +38,6 @@ def init():
     if fetch == "":
         fetch = "Y"
     
-
     tasks = [
         {"description": "Generate project folder", "func": lambda: os.mkdir(f"{projName}")},
         {"description": "Moving into the project folder", "func": lambda: os.chdir(f"{projName}")},

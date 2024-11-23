@@ -1,8 +1,13 @@
 {
-    "key1": {
-        "name": "/home/s7lver/Desktop/test"
-    },
-    "key2": {
-        "name": "sudo docker-compose up -d"
+    "debian-bullseye-lxde": {
+        "name": "debian-bullseye-lxde",
+        "keys": {
+            "dockerfile": "",
+            "docker-compose": "",
+            "supervisord": ""
+        },
+        "requirements": {
+            
+        }
     }
 }

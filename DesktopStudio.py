@@ -4,13 +4,14 @@ import argparse
 from funcs.init import init
 from funcs.run import run
 from funcs.fetch import fetch
-
+from funcs.install import install
 
 # argparse
 parser = argparse.ArgumentParser(prog='DesktopStudio', description='A docker-based studio for your linux configs and enviroments', epilog='by s7lver')
 
 parser.add_argument('action')
 parser.add_argument('-s', '--script')                        # positional argument
+parser.add_argument('-p', '--package')                        # positional argument
 parser.add_argument('-v', '--verbose', action='store_true')  # on/off flag
 
 args = parser.parse_args()
@@ -21,4 +22,6 @@ if __name__ == "__main__":
     if args.action == "run":
         run(args.script)
     if args.action == "fetch":
-        fetch
+        fetch()
+    if args.action == "install":
+        install(args.package)
