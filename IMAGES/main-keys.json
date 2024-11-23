@@ -2,9 +2,9 @@
     "debian-bullseye-lxde": {
         "name": "debian-bullseye-lxde",
         "keys": {
-            "dockerfile": "",
-            "docker-compose": "",
-            "supervisord": ""
+            "dockerfile": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-lxde/Dockerfile",
+            "docker-compose": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-lxde/docker-compose.yaml",
+            "supervisord": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-lxde/supervisord.conf"
         },
         "requirements": {
             
