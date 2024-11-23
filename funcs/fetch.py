@@ -7,6 +7,7 @@ import json
 def fetch():
     console = Console()
     main_keyring_url = "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/main-keys.json"
+    plugins_keyring_url = "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins-keys.json"
 
 
     print("WARNING: fetch requests are in BETA, and images can be unstable, continue? Y/n")
@@ -17,8 +18,10 @@ def fetch():
     if warning == "Y":
         # proceder
         # Crear un archivo temporal para almacenar el JSON
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_file:
-            temp_file_path = temp_file.name
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_file1, \
+            tempfile.NamedTemporaryFile(delete=False, suffix=".json") as temp_file2:
+            temp_file_path1 = temp_file1.name
+            temp_file_path2 = temp_file2.name
         
         with Progress(
             TextColumn("[bold blue]{task.description}", justify="right"),
@@ -26,35 +29,51 @@ def fetch():
             "[progress.percentage]{task.percentage:>3.1f}%",
             TimeRemainingColumn(),
         ) as progress:
-            task_id = progress.add_task("Downloading Main Keyring", total=100)
-            
-            try:
-                # Iniciar el comando curl y actualizar la barra mientras se descarga
-                process = subprocess.Popen(
-                    f"curl -s {main_keyring_url} -o {temp_file_path}",
-                    shell=True
-                )
-                
-                # Simular progreso mientras `curl` se ejecuta
-                while process.poll() is None:
-                    progress.update(task_id, advance=5)
-                    progress.refresh()
-                
-                progress.update(task_id, completed=100)  # Completar la barra al finalizar
-            except Exception as e:
-                console.log(f"[red]Error during download: {e}")
-                return
+            # Descargar el primer archivo
+                task_id_1 = progress.add_task("Downloading Main Keyring", total=100)
+                try:
+                    process1 = subprocess.Popen(
+                        f"curl -s {main_keyring_url} -o {temp_file_path1}",
+                        shell=True
+                    )
+                    while process1.poll() is None:
+                        progress.update(task_id_1, advance=5)
+                        progress.refresh()
+                    progress.update(task_id_1, completed=100)
+                except Exception as e:
+                    console.log(f"[red]Error downloading Keyring 1: {e}")
+                    return
+
+                # Descargar el segundo archivo
+                task_id_2 = progress.add_task("Downloading Plugins keyring", total=100)
+                try:
+                    process2 = subprocess.Popen(
+                        f"curl -s {plugins_keyring_url} -o {temp_file_path2}",
+                        shell=True
+                    )
+                    while process2.poll() is None:
+                        progress.update(task_id_2, advance=5)
+                        progress.refresh()
+                    progress.update(task_id_2, completed=100)
+                except Exception as e:
+                    console.log(f"[red]Error downloading Keyring 2: {e}")
+                    return
         
         # Leer el JSON descargado
         try:
-            with open(temp_file_path, "r") as file:
-                data = json.load(file)
-            
-            # Imprimir el JSON en color
+            with open(temp_file_path1, "r") as file1, open(temp_file_path2, "r") as file2:
+                data1 = json.load(file1)
+                data2 = json.load(file2)
+
+            # Imprimir los JSON en color
             console.print("")
-            console.print("[blue]Main Keyring")
+            console.print("[blue]Keyring 1")
             console.print("")
-            console.print_json(json.dumps(data, indent=2))
+            console.print_json(json.dumps(data1, indent=2))
+            console.print("")
+            console.print("[blue]Keyring 2")
+            console.print("")
+            console.print_json(json.dumps(data2, indent=2))
 
             # Pedir una ultima confirmacion
             print("Update Keys? Y/n")
@@ -62,7 +81,9 @@ def fetch():
             if confirmation1 == "":
                 confirmation1 = "Y"
             if confirmation1 == "Y":
-                # descargar el nuevo keyring
+                # Descargar los archivos actualizados a las rutas finales
+                final_path1 = "~/.desktopstudio/keys/main-keys.json"
+                final_path2 = "~/.desktopstudio/keys/plugins-keys.json"
 
                 with Progress(
                     TextColumn("[bold blue]{task.description}", justify="right"),
@@ -70,28 +91,38 @@ def fetch():
                     "[progress.percentage]{task.percentage:>3.1f}%",
                     TimeRemainingColumn(),
                 ) as progress:
-                    task_id = progress.add_task("Downloading Main Keyring", total=100)
-            
+                    # Descargar el primer archivo actualizado
+                    task_id_1 = progress.add_task("Updating Keyring 1", total=100)
                     try:
-                        # Iniciar el comando curl y actualizar la barra mientras se descarga
-                        process = subprocess.Popen(
-                            f"curl -s {main_keyring_url} -o ~/.desktopstudio/keys/main.json",
+                        process1 = subprocess.Popen(
+                            f"curl -s {main_keyring_url} -o {final_path1}",
                             shell=True
                         )
-                
-                        # Simular progreso mientras `curl` se ejecuta
-                        while process.poll() is None:
-                            progress.update(task_id, advance=5)
+                        while process1.poll() is None:
+                            progress.update(task_id_1, advance=5)
                             progress.refresh()
-                
-                        progress.update(task_id, completed=100)  # Completar la barra al finalizar
+                        progress.update(task_id_1, completed=100)
                     except Exception as e:
-                        console.log(f"[red]Error during download: {e}")
-                return
+                        console.log(f"[red]Error updating Keyring 1: {e}")
+
+                    # Descargar el segundo archivo actualizado
+                    task_id_2 = progress.add_task("Updating Keyring 2", total=100)
+                    try:
+                        process2 = subprocess.Popen(
+                            f"curl -s {plugins_keyring_url} -o {final_path2}",
+                            shell=True
+                        )
+                        while process2.poll() is None:
+                            progress.update(task_id_2, advance=5)
+                            progress.refresh()
+                        progress.update(task_id_2, completed=100)
+                    except Exception as e:
+                        console.log(f"[red]Error updating Keyring 2: {e}")
+
             else:
                 print("[yellow]Operation canceled.")
 
         except Exception as e:
-            console.log(f"[red]Error reading JSON file: {e}")
+            console.log(f"[red]Error reading JSON files: {e}")
     else:
         print("[yellow]Operation canceled.")

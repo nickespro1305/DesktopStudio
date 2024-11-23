@@ -19,6 +19,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 mkdir ~/.desktopstudio
 mkdir ~/.desktopstudio/keys
 mkdir ~/.desktopstudio/packages
+mkdir ~/.desktopstudio/plugins
 
 # create VENV and pip requirements
 python3 -m venv ~/.desktopstudio/venv
