@@ -2,7 +2,6 @@ from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 from rich.console import Console
 import subprocess
 import tempfile
-import os
 import json
 
 def fetch():

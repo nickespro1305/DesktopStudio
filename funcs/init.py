@@ -1,8 +1,10 @@
-from funcs.sysFuncs import getPath
+from funcs.sysFuncs import getPath, get_folders_in_directory
 from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
+from rich.console import Console
 import subprocess
 import os
 import json
+import getpass
 
 def genConfigFile(path):
     default_config = {
@@ -23,27 +25,30 @@ def genConfigFile(path):
 
 
 def init():
+    user = getpass.getuser()
+    console = Console()
+
     print("project path (leave blank for the actual path)")
     path = input("[+]")
     if path == "":
         path = getPath()
     print(f"project path selected: {path}")
+
     print("\nthis project needs a name, write here one")
     projName = input("[+]")
     print(f"{projName}, thats a beautifull name")
 
-    # TODO: fetch
-    print("do you wanna fetch for new content? Y/n")
-    fetch = input("[+]")
-    if fetch == "":
-        fetch = "Y"
+    packages = get_folders_in_directory(f"/home/{user}/.desktopstudio/packages")
+    console.print(f"Flavours: {packages}")
+    flavour = input("[+]")
     
     tasks = [
         {"description": "Generate project folder", "func": lambda: os.mkdir(f"{projName}")},
         {"description": "Moving into the project folder", "func": lambda: os.chdir(f"{projName}")},
         {"description": "Create mnt folder", "func": lambda: os.mkdir("mnt")},
-        {"description": "Copy docker-compose.yaml", "func": lambda: subprocess.run("cp ~/Desktop/desktop-studio/defaults/docker-compose.yaml .", shell=True, check=True)},
-        {"description": "Copy Dockerfile", "func": lambda: subprocess.run("cp ~/Desktop/desktop-studio/defaults/Dockerfile .", shell=True, check=True)},
+        {"description": "Copy docker-compose.yaml", "func": lambda: subprocess.run(f"cp ~/.desktopstudio/packages/{flavour}/docker-compose.yaml .", shell=True, check=True)},
+        {"description": "Copy Dockerfile", "func": lambda: subprocess.run(f"cp ~/.desktopstudio/packages/{flavour}/Dockerfile .", shell=True, check=True)},
+        {"description": "Copy supervysor conf file", "func": lambda: subprocess.run(f"cp ~/.desktopstudio/packages/{flavour}/supervisord.conf .", shell=True, check=True)},
         {"description": "Generate config file", "func": lambda: genConfigFile(f"{path}/{projName}")},
     ]
 
