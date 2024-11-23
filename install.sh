@@ -1,6 +1,6 @@
 # APT
 sudo apt-get update
-sudo apt-get install curl unzip ca-certificates zsh batcat lsd python3 python3-pip vim nano git -y
+sudo apt-get install curl unzip ca-certificates zsh batcat lsd python3 python3-pip vim nano git dos2unix -y
 
 # Add Docker's official GPG key:
 sudo install -m 0755 -d /etc/apt/keyrings

@@ -85,7 +85,7 @@ def install_plugin(package, combined_data, keys_array, user):
 
                     except Exception as e:
                         console.print(f"[red]Error downloading {filename}: {e}[/red]")
-                        
+
         # Asignar permisos y ejecutar .sh si está presente
         sh_file = next((os.path.basename(url) for url in keys_array if url.endswith(".sh")), None)
         if sh_file:
@@ -96,7 +96,8 @@ def install_plugin(package, combined_data, keys_array, user):
                 
                 # Ejecutar el script
                 console.print(f"[blue]Executing {sh_file}...[/blue]")
-                subprocess.run([f"./{sh_file}"], check=True)
+                subprocess.run([f"dos2unix {sh_file}"], shell=True, check=True)
+                subprocess.run([f"bash ./{sh_file}"], shell=True, check=True)
                 console.print(f"[green]{sh_file} executed successfully![/green]")
             except Exception as e:
                 console.print(f"[red]Error executing {sh_file}: {e}[/red]")
