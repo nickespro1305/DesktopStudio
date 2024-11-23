@@ -82,8 +82,8 @@ def fetch():
                 confirmation1 = "Y"
             if confirmation1 == "Y":
                 # Descargar los archivos actualizados a las rutas finales
-                final_path1 = "~/.desktopstudio/keys/main-keys.json"
-                final_path2 = "~/.desktopstudio/keys/plugins-keys.json"
+                final_path1 = "~/.desktopstudio/keys/main.json"
+                final_path2 = "~/.desktopstudio/keys/plugins.json"
 
                 with Progress(
                     TextColumn("[bold blue]{task.description}", justify="right"),
@@ -92,7 +92,7 @@ def fetch():
                     TimeRemainingColumn(),
                 ) as progress:
                     # Descargar el primer archivo actualizado
-                    task_id_1 = progress.add_task("Updating Keyring 1", total=100)
+                    task_id_1 = progress.add_task("Updating Main Keyring", total=100)
                     try:
                         process1 = subprocess.Popen(
                             f"curl -s {main_keyring_url} -o {final_path1}",
@@ -106,7 +106,7 @@ def fetch():
                         console.log(f"[red]Error updating Keyring 1: {e}")
 
                     # Descargar el segundo archivo actualizado
-                    task_id_2 = progress.add_task("Updating Keyring 2", total=100)
+                    task_id_2 = progress.add_task("Updating Plugins Keyring", total=100)
                     try:
                         process2 = subprocess.Popen(
                             f"curl -s {plugins_keyring_url} -o {final_path2}",

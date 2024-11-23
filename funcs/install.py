@@ -13,10 +13,27 @@ def install(package):
     console = Console()
     # comprobar si el paquete existe o no
     # leyendo las keys para buscar el nombre del paquete
-    with open(f"/home/{user}/.desktopstudio/keys/main.json", "r") as file:
-                data = json.load(file)
 
-    if package in data:
+    # Ruta de los archivos JSON
+    json_paths = [
+        f"/home/{user}/.desktopstudio/keys/main.json",
+        f"/home/{user}/.desktopstudio/keys/plugins.json",
+    ]
+
+    # Leer y combinar los datos de ambos archivos
+    combined_data = {}
+    for json_path in json_paths:
+        if os.path.exists(json_path):
+            try:
+                with open(json_path, "r") as file:
+                    data = json.load(file)
+                    combined_data.update(data)  # Combina las keys de ambos archivos
+            except Exception as e:
+                console.log(f"[red]Error reading {json_path}: {e}")
+        else:
+            console.log(f"[yellow]File not found: {json_path}")
+
+    if package in combined_data:
         console.print("[green]Package Founded!")
         # Extraer los valores de "keys" en un array
         keys_array = list(data[package]["keys"].values())

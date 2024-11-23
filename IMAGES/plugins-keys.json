@@ -1,6 +1,7 @@
 {
     "psa": {
         "name": "psa",
+        "type": "plugin",
         "keys": {
             "release": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/psa/psa.zip",
             "installer": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/psa/psa.sh"
