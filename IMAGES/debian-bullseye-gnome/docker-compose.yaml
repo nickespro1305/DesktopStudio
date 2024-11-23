@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  debian-lxde:
+  debian-gnome:
     build:
       context: .
       dockerfile: Dockerfile

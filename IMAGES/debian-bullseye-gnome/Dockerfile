@@ -10,9 +10,10 @@ ENV DISPLAY=:1 \
 
 # Actualizar e instalar paquetes necesarios
 RUN apt-get update && apt-get install -y \
+    gnome-session \
+    gnome-terminal \
     x11vnc \
     xvfb \
-    lxde \
     dbus-x11 \
     supervisor \
     && apt-get clean
@@ -28,7 +29,6 @@ RUN mkdir -p /home/dockeruser/.vnc \
 # Configurar Xvfb y x11vnc
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Crear volúmenes para los directorios deseados
 VOLUME /home/dockeruser/.config
 VOLUME /opt
 
