@@ -2,6 +2,7 @@
     "psa": {
         "name": "psa",
         "type": "plugin",
+        "description": "a plugin for show all the avaliable flavours and plugins using tables",
         "keys": {
             "release": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/psa/psa.zip",
             "installer": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/psa/psa.sh"

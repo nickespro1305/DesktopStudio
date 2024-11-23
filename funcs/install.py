@@ -7,6 +7,11 @@ import json
 import getpass
 import os
 
+def install_plugin(package, combined_data, keys_array):
+    console = Console()
+    console.print(f"[green]Installing plugin: {package}")
+    return
+
 
 def install(package):
     user = getpass.getuser()
@@ -34,8 +39,21 @@ def install(package):
             console.log(f"[yellow]File not found: {json_path}")
 
     if package in combined_data:
-        console.print("[green]Package Founded!")
-        # Extraer los valores de "keys" en un array
+        console.print("[green]Package found!")
+
+        # Verificar el tipo del paquete
+        package_type = combined_data[package].get("type", "unknown")
+        if package_type == "plugin":
+            console.print(f"[blue]Detected plugin! running plugin install wizard.[/blue]")
+
+            # Extraer los valores de "keys" en un array
+            keys_array = list(combined_data[package]["keys"].values())
+
+            # Llamar a `install_plugin` si es un plugin
+            install_plugin(package, combined_data, keys_array)
+            return
+
+        # Si no es un plugin, proceder con la instalación normal
         keys_array = list(data[package]["keys"].values())
         
         # creamos la tabla para visualizar mejor

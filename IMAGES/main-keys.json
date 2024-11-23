@@ -2,6 +2,7 @@
     "debian-bullseye-lxde": {
         "name": "debian-bullseye-lxde",
         "type": "flavour",
+        "description": "TODO",
         "keys": {
             "dockerfile": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-lxde/Dockerfile",
             "docker-compose": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-lxde/docker-compose.yaml",
@@ -14,6 +15,7 @@
     "debian-bullseye-gnome": {
         "name": "debian-bullseye-gnome",
         "type": "flavour",
+        "description": "TODO",
         "keys": {
             "dockerfile": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-gnome/Dockerfile",
             "docker-compose": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/debian-bullseye-gnome/docker-compose.yaml",
