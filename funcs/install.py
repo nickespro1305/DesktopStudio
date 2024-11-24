@@ -146,7 +146,7 @@ def install(package):
             return
 
         # Si no es un plugin, proceder con la instalación normal
-        keys_array = list(data[package]["keys"].values())
+        keys_array = list(combined_data[package]["keys"].values())
         
         # creamos la tabla para visualizar mejor
         table = Table(title="files to download")
