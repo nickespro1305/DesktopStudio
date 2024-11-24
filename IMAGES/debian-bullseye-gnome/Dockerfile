@@ -16,10 +16,16 @@ RUN apt-get update && apt-get install -y \
     xvfb \
     dbus-x11 \
     supervisor \
+    gdm3 \
     && apt-get clean
 
 # Crear un usuario no root
 RUN useradd -m -s /bin/bash dockeruser
+
+# Configurar GNOME para el usuario no root
+RUN mkdir -p /home/dockeruser/.config \
+    && echo "export DISPLAY=:1" >> /home/dockeruser/.bashrc \
+    && chown -R dockeruser:dockeruser /home/dockeruser/.config
 
 # Crear el directorio .vnc y configurar el archivo de contraseña
 RUN mkdir -p /home/dockeruser/.vnc \
