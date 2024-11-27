@@ -1,3 +1,4 @@
+from funcs.interactiveFuncs import *
 from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
 from rich.console import Console
 from rich.table import Table
@@ -38,10 +39,7 @@ def install_plugin(package, combined_data, keys_array, user):
         file_name = os.path.basename(item)
         table2.add_row(item, file_name)
     console.print(table2)
-    console.print("Are you sure to continue the install? Y/n")
-    confirmation1 = input("[+]")
-    if confirmation1 == "":
-        confirmation1 = "Y"
+    confirmation1 = confirmation(f"[blue]Are you sure to continue installing[/blue][bold cyan] {package_name}[/bold cyan][blue]?[/blue] [green]Y[/green]/[red]n[/red]", "[purple]$", 1)
     if confirmation1 == "Y":
         # creacion de la carpeta del plugin
         os.chdir(f"/home/{user}/.desktopstudio/plugins")
@@ -159,10 +157,7 @@ def install(package):
               table.add_row(item, file_name)
 
         console.print(table)
-        console.print("Are you sure to continue the install? Y/n")
-        confirmation1 = input("[+]")
-        if confirmation1 == "":
-            confirmation1 = "Y"
+        confirmation1 = confirmation(f"[blue]Are you sure to continue installing[/blue][bold cyan] {package}[/bold cyan][blue]?[/blue] [green]Y[/green]/[red]n[/red]", "[purple]$", 1)
         if confirmation1 == "Y":
 
             os.chdir(f"/home/{user}/.desktopstudio/packages")
