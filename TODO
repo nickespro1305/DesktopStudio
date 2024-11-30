@@ -1,8 +1,8 @@
 - mejorar el apartado de Usage
-- mejorar el aspecto del comando Init
--- mejorar las confirmaciones en general
+-- mejorar el aspecto del comando Init
+[+] mejorar las confirmaciones en general
 - darle un lavado de cara al comando run
-- revision y optimizacion de codigo
+-- revision y optimizacion de codigo
 - crear una utilidad para empaquetar plugins automaticamente
 - escribir el README.md
 - escribir la documentacion
@@ -11,8 +11,10 @@
 - giua para como crear tus propios plugins
 - crear el script de instalacion
 - opcion para ejecutar los plugins como demonios
-- el DesktopStudioLibDirector
+[+] el DesktopStudioLibDirector
+- ajustes adicionales para la instalacion de plugins (para no tener que depender tanto del .sh)
 
 # OPCIONAL
 - a;adirle un poco de color al menu de ayuda
 - preparar un laboratorio con docker, para poder testear la app
+- ajustes adicionales para la instalacion de plugins (para no tener que usar un .sh)

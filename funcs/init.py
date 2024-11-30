@@ -1,10 +1,9 @@
-from funcs.sysFuncs import getPath, get_folders_in_directory
+from funcs.sysFuncs import getPath
+from funcs.interactiveFuncs import *
 from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn
-from rich.console import Console
 import subprocess
 import os
 import json
-import getpass
 
 def genConfigFile(path):
     default_config = {
@@ -25,8 +24,6 @@ def genConfigFile(path):
 
 
 def init():
-    user = getpass.getuser()
-    console = Console()
 
     print("project path (leave blank for the actual path)")
     path = input("[+]")
@@ -34,13 +31,8 @@ def init():
         path = getPath()
     print(f"project path selected: {path}")
 
-    print("\nthis project needs a name, write here one")
-    projName = input("[+]")
-    print(f"{projName}, thats a beautifull name")
-
-    packages = get_folders_in_directory(f"/home/{user}/.desktopstudio/packages")
-    console.print(f"Flavours: {packages}")
-    flavour = input("[+]")
+    projName = askForName("\n[purple]$", 1)
+    flavour = askForFlavour("\n[purple]$")
     
     tasks = [
         {"description": "Generate project folder", "func": lambda: os.mkdir(f"{projName}")},

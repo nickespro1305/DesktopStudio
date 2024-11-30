@@ -20,6 +20,8 @@ mkdir ~/.desktopstudio
 mkdir ~/.desktopstudio/keys
 mkdir ~/.desktopstudio/packages
 mkdir ~/.desktopstudio/plugins
+mkdir ~/.desktopstudio/bin
+
 
 # create VENV and pip requirements
 python3 -m venv ~/.desktopstudio/venv
@@ -28,6 +30,7 @@ pip install rich
 
 # extract and copy files
 cp -r funcs ~/.desktopstudio/funcs
+cp -r bin ~/.desktopstudio/bin
 
 # add to the path the executable file
 cp DesktopStudio ~/.desktopstudio/DesktopStudio

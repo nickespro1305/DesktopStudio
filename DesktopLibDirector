@@ -1,0 +1,102 @@
+#!/usr/bin/env python3
+
+import funcs.fetch as fetch
+import funcs.init as init
+import funcs.install as install
+import funcs.interactiveFuncs as interactiveFuncs
+import funcs.jsonFuncs as jsonFuncs
+import funcs.ps as ps
+import funcs.rm as rm
+import funcs.rn as rn
+import funcs.run as run
+import funcs.sysFuncs as sysFuncs
+
+import argparse
+import inspect
+
+# Diccionario que mapea nombres de librerías a los módulos
+libs = {
+    "fetch": fetch,
+    "init": init,
+    "install": install,
+    "interactiveFuncs": interactiveFuncs,
+    "jsonFuncs": jsonFuncs,
+    "ps": ps,
+    "rm": rm,
+    "rn": rn,
+    "run": run,
+    "sysFuncs": sysFuncs,
+}
+
+# Configuración del parser de argumentos
+parser = argparse.ArgumentParser(
+    prog='DesktopLibDirector',
+    description='A backend utility to interact with functions and libraries'
+)
+
+parser.add_argument('lib', help='Library to use')
+parser.add_argument('function', nargs='?', help='Function to call (optional)')
+parser.add_argument('-1', help='First argument for the function', default=None)
+parser.add_argument('-2', help='Second argument for the function', default=None)
+parser.add_argument('-3', help='Third argument for the function', default=None)
+parser.add_argument('-4', help='Fourth argument for the function', default=None)
+parser.add_argument('-5', help='Fifth argument for the function', default=None)
+parser.add_argument('-v', '--verbose', action='store_true', help='Verbose mode')
+
+args = parser.parse_args()
+
+# Validación de la librería
+if args.lib not in libs:
+    print(f"Error: Library '{args.lib}' not found. Available libraries are: {', '.join(libs.keys())}")
+    exit(1)
+
+lib = libs[args.lib]
+
+# Si no se especifica una función, mostrar todas las funciones de la librería y sus parámetros
+if not args.function:
+    print(f"Functions available in library '{args.lib}':")
+    functions = [func for func in dir(lib) if callable(getattr(lib, func)) and not func.startswith("__")]
+    for func_name in functions:
+        func = getattr(lib, func_name)
+        sig = inspect.signature(func)
+        print(f" - {func_name}({', '.join([str(param) for param in sig.parameters.values()])})")
+    exit(0)
+
+# Validación de la función
+if not hasattr(lib, args.function):
+    print(f"Error: Function '{args.function}' not found in library '{args.lib}'.")
+    exit(1)
+
+# Obtención de la función
+func = getattr(lib, args.function)
+
+# Mostrar los parámetros de la función en modo verbose
+if args.verbose:
+    sig = inspect.signature(func)
+    print(f"Function '{args.function}' in library '{args.lib}' has the following parameters:")
+    for param in sig.parameters.values():
+        print(f" - {param.name} (default: {param.default})")
+
+# Verificar si la función es callable
+if not callable(func):
+    print(f"Error: '{args.function}' is not callable.")
+    exit(1)
+
+# Recopilación de argumentos posicionales
+positional_args = [getattr(args, str(i), None) for i in range(1, 6) if getattr(args, str(i), None) is not None]
+
+# Modo verbose
+if args.verbose:
+    print(f"Library: {args.lib}")
+    print(f"Function: {args.function}")
+    print(f"Arguments: {positional_args}")
+
+# Ejecución de la función con los argumentos
+try:
+    result = func(*positional_args)
+    if args.verbose:
+        print(f"Result: {result}")
+    else:
+        print(result)
+except Exception as e:
+    print(f"Error during function execution: {e}")
