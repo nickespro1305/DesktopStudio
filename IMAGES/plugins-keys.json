@@ -10,5 +10,17 @@
         "requirements": {
             
         }
+    },
+    "pluginPackager": {
+        "name": "pluginPackager",
+        "type": "plugin",
+        "description": "a official tool to help with the plugin development",
+        "keys": {
+            "release": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/pluginPackager/pluginPackager.zip",
+            "installer": "https://raw.githubusercontent.com/nickespro1305/DesktopStudio/refs/heads/main/IMAGES/plugins/pluginPackager/pluginPackager.sh"
+        },
+        "requirements": {
+            
+        }
     }
 }

@@ -1,0 +1,101 @@
+#!/usr/bin/env python3
+
+import argparse
+import textwrap
+import subprocess
+import re
+from pathlib import Path
+
+# argparse
+parser = argparse.ArgumentParser(prog='DesktopStudio',
+                                 formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 description=textwrap.dedent('''\
+
+        A developer tool for package our plugins into the package manager
+                                                             
+        Avaliable Actions
+
+        ----------------------------------------------------------------
+
+        package     package a project using the PKGBUILD
+
+                             
+                                '''))
+
+parser.add_argument('action')
+
+args = parser.parse_args()
+
+def cargar_variables(archivo):
+    """
+    Lee un archivo y extrae las variables definidas en él.
+    
+    :param archivo: Ruta del archivo de comandos.
+    :return: Diccionario de variables definidas en el archivo.
+    """
+    variables = {}
+    with open(archivo, "r") as f:
+        for linea in f:
+            linea = linea.strip()
+            # Ignorar comentarios y líneas vacías
+            if not linea or linea.startswith("#"):
+                continue
+            
+            # Buscar definiciones de variables en el formato `var="valor"`
+            match = re.match(r"^([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*\"(.*)\"$", linea)
+            if match:
+                variable, valor = match.groups()
+                variables[variable] = valor
+    return variables
+
+def reemplazar_variables(comando, variables):
+    """
+    Reemplaza las variables en el comando por su valor.
+    
+    :param comando: El comando que puede contener variables.
+    :param variables: Diccionario de variables a reemplazar.
+    :return: El comando con las variables reemplazadas.
+    """
+    for var, valor in variables.items():
+        comando = comando.replace(f"${{{var}}}", valor)
+        comando = comando.replace(f"${var}", valor)  # También con la forma corta
+    return comando
+
+def package(archivo, modo_prueba=False):
+    """
+    Lee un archivo con comandos y los ejecuta, reemplazando las variables.
+    
+    :param archivo: Ruta del archivo sin extensión con los comandos.
+    :param modo_prueba: Si es True, solo muestra los comandos sin ejecutarlos.
+    """
+    ruta = Path(archivo)
+    if not ruta.exists():
+        print(f"Error: El archivo '{archivo}' no existe.")
+        return
+
+    # Cargar las variables definidas en el archivo
+    variables = cargar_variables(archivo)
+
+    with open(ruta, "r") as f:
+        comandos = f.readlines()
+
+    print(f"Packaging plugin with script: '{archivo}'")
+    for linea in comandos:
+        comando = linea.strip()
+        if not comando or comando.startswith("#"):  # Ignorar líneas vacías o comentarios
+            continue
+
+        # Reemplazar variables en el comando
+        comando_reemplazado = reemplazar_variables(comando, variables)
+
+        print(f"$ {comando_reemplazado}")
+        if not modo_prueba:
+            try:
+                resultado = subprocess.run(comando_reemplazado, shell=True, check=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                print(resultado.stdout.strip())
+            except subprocess.CalledProcessError as e:
+                print(f"Error ejecutando '{comando_reemplazado}': {e.stderr.strip()}")
+
+if __name__ == "__main__":
+    if args.action == "package":
+        package("MAKEPLG", False)

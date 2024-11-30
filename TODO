@@ -3,7 +3,7 @@
 [+] mejorar las confirmaciones en general
 - darle un lavado de cara al comando run
 -- revision y optimizacion de codigo
-- crear una utilidad para empaquetar plugins automaticamente
+[+] crear una utilidad para empaquetar plugins automaticamente
 - escribir el README.md
 - escribir la documentacion
 - sistema de actualizaciones para el programa general
@@ -13,6 +13,8 @@
 - opcion para ejecutar los plugins como demonios
 [+] el DesktopStudioLibDirector
 - ajustes adicionales para la instalacion de plugins (para no tener que depender tanto del .sh)
+- a;adir al pluginPackager la capacidad de generar un archivo "plantilla" MAKEPLG
+- a;adirle colores al script pluginPackager
 
 # OPCIONAL
 - a;adirle un poco de color al menu de ayuda
