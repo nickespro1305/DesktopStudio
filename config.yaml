@@ -1,7 +1,6 @@
 iso_name: arch-custom
 username: archuser
 packages:
-  - neofetch
   - htop
   - vim
 files:

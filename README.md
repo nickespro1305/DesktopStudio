@@ -1,3 +1,2 @@
 DEPENDENCIAS:
-    python: shutil, yaml
-    global: archiso git python python-yaml
+    global: archiso git python python-yaml make
