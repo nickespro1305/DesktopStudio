@@ -8,6 +8,15 @@ CUSTOM_DIR = "./archiso"
 OUTPUT_DIR = "./output"
 WORK_DIR = "./work"
 
+def write_inline_files(config):
+    print("📝 Escribiendo archivos inline desde config.yaml...")
+    for entry in config.get("inline_files", []):
+        full_path = os.path.join(CUSTOM_DIR, "airootfs", entry["path"].lstrip("/"))
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        with open(full_path, "w") as f:
+            f.write(entry["content"])
+        print(f"   - Escrito: {full_path}")
+
 def run(cmd):
     print(f"🏃 Ejecutando: {cmd}")
     subprocess.run(cmd, shell=True, check=True)
@@ -49,6 +58,7 @@ def main():
     prepare_dir()
     add_packages(config)
     copy_files(config)
+    write_inline_files(config)
     build_iso(config.get("iso_name", "arch-custom"))
 
 if __name__ == "__main__":
