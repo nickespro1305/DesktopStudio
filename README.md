@@ -1,2 +1,2 @@
 DEPENDENCIAS:
-    global: archiso git python python-yaml make
+    global: archiso git python python-yaml make sudo
