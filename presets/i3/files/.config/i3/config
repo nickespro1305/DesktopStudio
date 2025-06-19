@@ -1,1 +1,10 @@
-exec --no-startup-id xrandr --output eDP1 --brightness 0.9
+set $mod Mod4
+bindsym $mod+Return exec alacritty
+bindsym $mod+d exec dmenu_run
+bindsym $mod+Shift+q kill
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+c reload
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right

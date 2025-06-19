@@ -1,5 +1,4 @@
 iso_name: arch-i3
-username: archuser
 packages:
   - xorg
   - xorg-xinit
@@ -7,21 +6,26 @@ packages:
   - i3status
   - dmenu
   - alacritty
+  - sudo
 files:
   # i3 default config file
   - source: ./files/.config/i3/config
     destination: /etc/skel/.config/i3/config
-  # xinitrc
-  - source: ./files/.xinitrc
-    destination: /etc/skel/.xinitrc
 
 inline_files:
+  - path: /etc/skel/.xinitrc
+    content: |
+      exec i3
+
   - path: /etc/systemd/system/getty@tty1.service.d/autologin.conf
     content: |
       [Service]
       ExecStart=
       ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
 
-  - path: /root/.bash_profile
-    content: |
-      [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+user:
+  name: user
+  password: user
+  groups:
+    - wheel
+  shell: /bin/bash
