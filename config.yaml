@@ -1,0 +1,9 @@
+iso_name: arch-custom
+username: archuser
+packages:
+  - neofetch
+  - htop
+  - vim
+files:
+  - source: ./files/welcome.txt
+    destination: /etc/motd
