@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
+rm -f /var/db/Makefile
+
+mkdir -p /tmp/pacman-cache
+echo "CacheDir = /tmp/pacman-cache" >> /etc/pacman.conf
+
+mount -t proc none /proc || true
+mount --rbind /sys /sys || true
+mount --rbind /dev /dev || true
+
 USER_NAME="{{user_name}}"
 USER_PASS="{{user_password}}"
 USER_GROUPS="{{user_groups}}"

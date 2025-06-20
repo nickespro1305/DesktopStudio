@@ -17,10 +17,11 @@ def write_inline_files(config):
             f.write(entry["content"])
         print(f"   - Escrito: {full_path}")
 
-def clean_work_dir():
-    if os.path.exists(WORK_DIR):
-        shutil.rmtree(WORK_DIR)
-        print("[INFO] Directorio de trabajo limpiado")
+def clean_all_dirs():
+    for d in [WORK_DIR, OUTPUT_DIR, CUSTOM_DIR]:
+        if os.path.exists(d):
+            print(f"[INFO] Eliminando directorio {d}")
+            shutil.rmtree(d)
 
 def copy_and_customize_script(config):
     preset_path = os.path.join("presets", "customize_airootfs.sh")
@@ -75,6 +76,25 @@ def copy_files(config):
         shutil.copy(f["source"], dest_path)
         print(f"   - {f['source']} → {dest_path}")
 
+def mount_pacman_cache():
+    cache_dir = os.path.join(WORK_DIR, "x86_64", "airootfs", "var", "cache", "pacman", "pkg")
+    os.makedirs(cache_dir, exist_ok=True)
+    try:
+        subprocess.run(["mountpoint", "-q", cache_dir], check=False)
+        subprocess.run(["sudo", "mount", "-t", "tmpfs", "-o", "size=4G", "tmpfs", cache_dir], check=True)
+        print(f"[INFO] Montado tmpfs en {cache_dir}")
+    except subprocess.CalledProcessError:
+        print(f"[WARN] No se pudo montar tmpfs en {cache_dir}")
+
+def unmount_pacman_cache():
+    cache_dir = os.path.join(WORK_DIR, "x86_64", "airootfs", "var", "cache", "pacman", "pkg")
+    try:
+        subprocess.run(["sudo", "umount", "-l", cache_dir], check=True)
+        print(f"[INFO] Desmontado tmpfs de {cache_dir}")
+    except subprocess.CalledProcessError:
+        print(f"[WARN] No se pudo desmontar {cache_dir}")
+
+
 def build_iso(iso_name):
     print("🛠️  Generando ISO personalizada...")
     os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -86,13 +106,19 @@ def main():
     with open("config.yaml") as f:
         config = yaml.safe_load(f)
 
-    clean_work_dir()
     prepare_dir()
     add_packages(config)
     copy_files(config)
     write_inline_files(config)
     copy_and_customize_script(config)
-    build_iso(config.get("iso_name", "arch-custom"))
+    
+    clean_all_dirs()  # limpia antes de montar
+    mount_pacman_cache()  # <--- monta tmpfs
+
+    try:
+        build_iso(config.get("iso_name", "arch-custom"))
+    finally:
+        unmount_pacman_cache()  # <--- desmonta aunque falle
 
 if __name__ == "__main__":
     main()
