@@ -58,7 +58,11 @@ def prepare_dir():
         print("🧹 Borrando configuración previa...")
         shutil.rmtree(CUSTOM_DIR)
     print(f"📁 Copiando plantilla de ArchISO desde {ARCHISO_TEMPLATE}...")
-    shutil.copytree(ARCHISO_TEMPLATE, CUSTOM_DIR, symlinks=True)
+    try:
+        shutil.copytree(ARCHISO_TEMPLATE, CUSTOM_DIR, symlinks=True)
+    except Exception as e:
+        print(f"[ERROR] No se pudo copiar la plantilla: {e}")
+        raise
 
 def add_packages(config):
     pkglist_path = os.path.join(CUSTOM_DIR, "packages.x86_64")
