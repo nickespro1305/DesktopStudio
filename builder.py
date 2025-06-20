@@ -57,9 +57,11 @@ def prepare_dir():
     if os.path.exists(CUSTOM_DIR):
         print("🧹 Borrando configuración previa...")
         shutil.rmtree(CUSTOM_DIR)
+        print("[INFO] Directorio archiso borrado")
     print(f"📁 Copiando plantilla de ArchISO desde {ARCHISO_TEMPLATE}...")
     try:
         shutil.copytree(ARCHISO_TEMPLATE, CUSTOM_DIR, symlinks=True)
+        print(f"[INFO] Plantilla copiada a {CUSTOM_DIR}")
     except Exception as e:
         print(f"[ERROR] No se pudo copiar la plantilla: {e}")
         raise
