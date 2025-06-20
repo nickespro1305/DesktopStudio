@@ -6,7 +6,6 @@ packages:
   - i3status
   - dmenu
   - alacritty
-  - sudo
 files:
   # i3 default config file
   - source: ./files/.config/i3/config
@@ -22,10 +21,3 @@ inline_files:
       [Service]
       ExecStart=
       ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
-
-user:
-  name: user
-  password: user
-  groups:
-    - wheel
-  shell: /bin/bash

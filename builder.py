@@ -33,17 +33,6 @@ def copy_and_customize_script(config):
     with open(target_path, "r") as f:
         content = f.read()
 
-    user_cfg = config.get("user", {})
-    user_name = user_cfg.get("name", "user")
-    user_pass = user_cfg.get("password", "archlinux")
-    user_groups = ",".join(user_cfg.get("groups", ["wheel"]))
-
-    content = (
-        content.replace("{{user_name}}", user_name)
-               .replace("{{user_password}}", user_pass)
-               .replace("{{user_groups}}", user_groups)
-    )
-
     with open(target_path, "w") as f:
         f.write(content)
 
@@ -87,7 +76,7 @@ def mount_pacman_cache():
     os.makedirs(cache_dir, exist_ok=True)
     try:
         subprocess.run(["mountpoint", "-q", cache_dir], check=False)
-        subprocess.run(["sudo", "mount", "-t", "tmpfs", "-o", "size=4G", "tmpfs", cache_dir], check=True)
+        subprocess.run(["mount", "-t", "tmpfs", "-o", "size=4G", "tmpfs", cache_dir], check=True)
         print(f"[INFO] Montado tmpfs en {cache_dir}")
     except subprocess.CalledProcessError:
         print(f"[WARN] No se pudo montar tmpfs en {cache_dir}")
@@ -95,7 +84,7 @@ def mount_pacman_cache():
 def unmount_pacman_cache():
     cache_dir = os.path.join(WORK_DIR, "x86_64", "airootfs", "var", "cache", "pacman", "pkg")
     try:
-        subprocess.run(["sudo", "umount", "-l", cache_dir], check=True)
+        subprocess.run(["umount", "-l", cache_dir], check=True)
         print(f"[INFO] Desmontado tmpfs de {cache_dir}")
     except subprocess.CalledProcessError:
         print(f"[WARN] No se pudo desmontar {cache_dir}")
@@ -112,15 +101,13 @@ def main():
     with open("config.yaml") as f:
         config = yaml.safe_load(f)
 
+    clean_all_dirs()  # limpia antes de montar
     prepare_dir()
     add_packages(config)
     copy_files(config)
     write_inline_files(config)
     copy_and_customize_script(config)
-    
-    clean_all_dirs()  # limpia antes de montar
-    mount_pacman_cache()  # <--- monta tmpfs
-
+    mount_pacman_cache()  # <--- monta tmpf
     try:
         build_iso(config.get("iso_name", "arch-custom"))
     finally:
