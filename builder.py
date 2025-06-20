@@ -17,6 +17,11 @@ def write_inline_files(config):
             f.write(entry["content"])
         print(f"   - Escrito: {full_path}")
 
+def clean_work_dir():
+    if os.path.exists(WORK_DIR):
+        shutil.rmtree(WORK_DIR)
+        print("[INFO] Directorio de trabajo limpiado")
+
 def copy_and_customize_script(config):
     preset_path = os.path.join("presets", "customize_airootfs.sh")
     target_path = os.path.join(CUSTOM_DIR, "airootfs", "root", "customize_airootfs.sh")
@@ -88,6 +93,7 @@ def main():
     copy_files(config)
     write_inline_files(config)
     copy_and_customize_script(config)
+    clean_work_dir()
     build_iso(config.get("iso_name", "arch-custom"))
 
 if __name__ == "__main__":
