@@ -26,29 +26,27 @@ def copy_and_customize_script(config):
     preset_path = os.path.join("presets", "customize_airootfs.sh")
     target_path = os.path.join(CUSTOM_DIR, "airootfs", "root", "customize_airootfs.sh")
 
-    # Copiar plantilla a destino
     os.makedirs(os.path.dirname(target_path), exist_ok=True)
     shutil.copy2(preset_path, target_path)
 
-    # Leer contenido
     with open(target_path, "r") as f:
         content = f.read()
 
     user_cfg = config.get("user", {})
-    user_name = user_cfg.get("name", "usuario")
+    user_name = user_cfg.get("name", "user")
     user_pass = user_cfg.get("password", "archlinux")
     user_groups = ",".join(user_cfg.get("groups", ["wheel"]))
 
-    # Reemplazar placeholders
-    content = content.replace("{{user_name}}", user_name)
-    content = content.replace("{{user_password}}", user_pass)
-    content = content.replace("{{user_groups}}", user_groups)
+    content = (
+        content.replace("{{user_name}}", user_name)
+               .replace("{{user_password}}", user_pass)
+               .replace("{{user_groups}}", user_groups)
+    )
 
-    # Escribir contenido modificado
     with open(target_path, "w") as f:
         f.write(content)
 
-    print(f"Script customize_airootfs.sh copiado y personalizado con usuario '{user_name}'")
+    print(f"[INFO] Script 'customize_airootfs.sh' personalizado para el usuario '{user_name}'.")
 
 def run(cmd):
     print(f"🏃 Ejecutando: {cmd}")
@@ -88,12 +86,12 @@ def main():
     with open("config.yaml") as f:
         config = yaml.safe_load(f)
 
+    clean_work_dir()
     prepare_dir()
     add_packages(config)
     copy_files(config)
     write_inline_files(config)
     copy_and_customize_script(config)
-    clean_work_dir()
     build_iso(config.get("iso_name", "arch-custom"))
 
 if __name__ == "__main__":
