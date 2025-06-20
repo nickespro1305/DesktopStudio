@@ -14,6 +14,12 @@ else
   echo "[INFO] Usuario $USER_NAME ya existe, omitiendo creación y contraseña."
 fi
 
+# Inicializar el keyring de pacman
+echo "[INFO] Inicializando keyring..."
+pacman-key --init
+pacman-key --populate archlinux
+
+
 # Instalar sudo
 pacman -Sy --noconfirm sudo
 
