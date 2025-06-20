@@ -18,7 +18,7 @@ def write_inline_files(config):
         print(f"   - Escrito: {full_path}")
 
 def clean_all_dirs():
-    for d in [WORK_DIR, OUTPUT_DIR, CUSTOM_DIR]:
+    for d in [WORK_DIR, OUTPUT_DIR]:  # NO borres CUSTOM_DIR aquí
         if os.path.exists(d):
             print(f"[INFO] Eliminando directorio {d}")
             shutil.rmtree(d)
